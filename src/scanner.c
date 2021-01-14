@@ -97,7 +97,7 @@ jade_token jade_scan(jade_scanner* scanner) {
 			else { token.kind = JADE_TOKEN_KIND_NOT; }
 			break;
 		default:
-			if (isalpha(ch)) { token.kind = JADE_TOKEN_KIND_IDENTIFIER; skip_identifier(scanner); }
+			if (isalpha(ch) || ch == '_') { token.kind = JADE_TOKEN_KIND_IDENTIFIER; skip_identifier(scanner); }
 			else if (isdigit(ch)) { token.kind = JADE_TOKEN_KIND_INTEGER; skip_integer(scanner); }
 			else if (isspace(ch)) { skip_whitespace(scanner); return jade_scan(scanner); }
 			else { syntax_error(scanner, token.line, token.column); }
