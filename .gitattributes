@@ -1,0 +1,5 @@
+*.c linguist-language=C
+*.h linguist-language=C
+*.jl linguist-language=Text
+
+* text eol=lf
