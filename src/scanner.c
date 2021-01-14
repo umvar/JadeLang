@@ -145,6 +145,7 @@ char next_char(jade_scanner* scanner) {
 }
 
 void syntax_error(jade_scanner* scanner, long line, long column) {
+	// TODO: diagnostics
 	fprintf(stderr, "%s:%ld:%ld: syntax error\n", scanner->path, line, column);
 	exit(EXIT_FAILURE);
 }

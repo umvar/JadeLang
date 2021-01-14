@@ -1,9 +1,10 @@
-program = '(' [global_definition_list] ')' ',' '(' expression ')';
-
-function_definition = identifier '(' [identifier_list] ')' ':=' expression;
+program = '(' [global_definition_list] ')' ',' '(' [expression_list] ')';
 
 global_definition = function_definition | variable_definition;
 global_definition_list = global_definition { ',' global_definition };
+
+function_definition = identifier '(' [identifier_list] ')' ':=' expression;
+variable_definition = identifier ':=' expression;
 
 expression = '(' [expression_list] ')'
            | identifier
@@ -24,8 +25,7 @@ function_call = identifier '(' expression_list ')';
 unary_expression = unary_operator expression;
 binary_expression = expression binary_operator expression;
 labeled_expression = '#' '(' expression ',' expression [',' expression] ')';
-jump_expression = "#+(!+)?";
-variable_definition = identifier ':=' expression;
+jump_expression = "#+!?";
 variable_assignment = identifier '=' expression;
 
 unary_operator = '+' | '-' | '~' | '!';

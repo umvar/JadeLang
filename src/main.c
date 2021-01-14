@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "scanner.h"
+#include "ast.h"
 
 int main(int argc, char** argv) {
 	if (argc < 2) {
