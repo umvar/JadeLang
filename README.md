@@ -1,4 +1,4 @@
 # JadeLang
 The Jade Programming Language
 
-Generates JadeVM Bytecode File
+Generates JadeVM Bytecode File (.jb)
