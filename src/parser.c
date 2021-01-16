@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include "parser.h"
+#include "visitors/deleter_visitor.h"
 
 void jade_parser_init(jade_parser* parser, jade_scanner* scanner) {
 	parser->scanner = scanner;
@@ -7,10 +8,7 @@ void jade_parser_init(jade_parser* parser, jade_scanner* scanner) {
 }
 
 void jade_parser_destroy(jade_parser* parser) {
-	parser->scanner = NULL;
-
-	// free all nodes in ast
-	parser->ast = NULL;
+	accept_deleter_visitor(parser->ast);
 }
 
 jade_program* jade_parser_parse(jade_scanner* scanner) {

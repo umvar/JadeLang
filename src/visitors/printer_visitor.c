@@ -6,13 +6,13 @@ typedef struct printer_visitor {
 	long depth;
 } printer_visitor;
 
-void write_depth(long depth) {
+static void write_depth(long depth) {
 	for (long i = 0; i < depth; i++) {
 		printf("  ");
 	}
 }
 
-void visit_program(printer_visitor* visitor, jade_program* node) {
+static void visit_program(printer_visitor* visitor, jade_program* node) {
 	write_depth(visitor->depth);
 	printf("Program\n");
 
@@ -22,7 +22,7 @@ void visit_program(printer_visitor* visitor, jade_program* node) {
 	visitor->depth -= 1;
 }
 
-void visit_global_definition_list(printer_visitor* visitor, jade_global_definition_list* node) {
+static void visit_global_definition_list(printer_visitor* visitor, jade_global_definition_list* node) {
 	write_depth(visitor->depth);
 	printf("Global Definition List\n");
 
@@ -38,7 +38,7 @@ void visit_global_definition_list(printer_visitor* visitor, jade_global_definiti
 	visitor->depth -= 1;
 }
 
-void visit_function_definition(printer_visitor* visitor, jade_function_definition* node) {
+static void visit_function_definition(printer_visitor* visitor, jade_function_definition* node) {
 	write_depth(visitor->depth);
 	printf("Function Definition\n");
 
@@ -49,7 +49,7 @@ void visit_function_definition(printer_visitor* visitor, jade_function_definitio
 	visitor->depth -= 1;
 }
 
-void visit_variable_definition(printer_visitor* visitor, jade_variable_definition* node) {
+static void visit_variable_definition(printer_visitor* visitor, jade_variable_definition* node) {
 	write_depth(visitor->depth);
 	printf("Variable Definition\n");
 
@@ -59,7 +59,7 @@ void visit_variable_definition(printer_visitor* visitor, jade_variable_definitio
 	visitor->depth -= 1;
 }
 
-void visit_expression_list(printer_visitor* visitor, jade_expression_list* node) {
+static void visit_expression_list(printer_visitor* visitor, jade_expression_list* node) {
 	write_depth(visitor->depth);
 	printf("Expression List\n");
 
@@ -75,17 +75,17 @@ void visit_expression_list(printer_visitor* visitor, jade_expression_list* node)
 	visitor->depth -= 1;
 }
 
-void visit_identifier(printer_visitor* visitor, jade_identifier* node) {
+static void visit_identifier(printer_visitor* visitor, jade_identifier* node) {
 	write_depth(visitor->depth);
 	printf("Identifier (%s)\n", node->name);
 }
 
-void visit_integer(printer_visitor* visitor, jade_integer* node) {
+static void visit_integer(printer_visitor* visitor, jade_integer* node) {
 	write_depth(visitor->depth);
 	printf("Integer (%ld)\n", node->value);
 }
 
-void visit_function_call(printer_visitor* visitor, jade_function_call* node) {
+static void visit_function_call(printer_visitor* visitor, jade_function_call* node) {
 	write_depth(visitor->depth);
 	printf("Function Call\n");
 
@@ -95,7 +95,7 @@ void visit_function_call(printer_visitor* visitor, jade_function_call* node) {
 	visitor->depth -= 1;
 }
 
-void visit_unary_expression(printer_visitor* visitor, jade_unary_expression* node) {
+static void visit_unary_expression(printer_visitor* visitor, jade_unary_expression* node) {
 	write_depth(visitor->depth);
 	printf("Unary Expression (operator = %s)\n", jade_token_kind_name(node->operator));
 
@@ -104,7 +104,7 @@ void visit_unary_expression(printer_visitor* visitor, jade_unary_expression* nod
 	visitor->depth -= 1;
 }
 
-void visit_binary_expression(printer_visitor* visitor, jade_binary_expression* node) {
+static void visit_binary_expression(printer_visitor* visitor, jade_binary_expression* node) {
 	write_depth(visitor->depth);
 	printf("Binary Expression (operator = %s)\n", jade_token_kind_name(node->operator));
 
@@ -114,7 +114,7 @@ void visit_binary_expression(printer_visitor* visitor, jade_binary_expression* n
 	visitor->depth -= 1;
 }
 
-void visit_labeled_expression(printer_visitor* visitor, jade_labeled_expression* node) {
+static void visit_labeled_expression(printer_visitor* visitor, jade_labeled_expression* node) {
 	write_depth(visitor->depth);
 	printf("Labeled Expression\n");
 
@@ -125,12 +125,12 @@ void visit_labeled_expression(printer_visitor* visitor, jade_labeled_expression*
 	visitor->depth -= 1;
 }
 
-void visit_jump_expression(printer_visitor* visitor, jade_jump_expression* node) {
+static void visit_jump_expression(printer_visitor* visitor, jade_jump_expression* node) {
 	write_depth(visitor->depth);
 	printf("Jump Expression (loops: %d, break: %d)\n", node->loop_index, node->is_break);
 }
 
-void visit_variable_assignment(printer_visitor* visitor, jade_variable_assignment* node) {
+static void visit_variable_assignment(printer_visitor* visitor, jade_variable_assignment* node) {
 	write_depth(visitor->depth);
 	printf("Variable Assignment\n");
 
@@ -140,7 +140,7 @@ void visit_variable_assignment(printer_visitor* visitor, jade_variable_assignmen
 	visitor->depth -= 1;
 }
 
-void accept_printer(jade_program* node) {
+void accept_printer_visitor(jade_program* node) {
 	printer_visitor pv = {
 		.visit_program = visit_program,
 		.visit_global_definition_list = visit_global_definition_list,
