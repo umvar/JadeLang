@@ -52,7 +52,8 @@ restrictions placed on how long the computation of a constant expression is allo
 			s = s + i,
 			i = i + 1,
 			#
-		))
+		)),
+		s
 	)
 ),
 K
