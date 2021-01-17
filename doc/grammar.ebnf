@@ -1,8 +1,11 @@
-program = '(' [global_definition_list] ')' ',' '(' [expression_list] ')';
+program = global_definition ',' expression;
 
-global_definition = function_definition | variable_definition;
+global_definition = '(' [global_definition_list] ')'
+                  | function_definition
+                  | variable_definition
+                  ;
+
 global_definition_list = global_definition { ',' global_definition };
-
 function_definition = identifier '(' [identifier_list] ')' ':=' expression;
 variable_definition = identifier ':=' expression;
 
