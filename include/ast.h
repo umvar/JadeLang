@@ -44,7 +44,7 @@ typedef struct jade_expression_list {
 	jade_ast_kind kind;
 	ast_node* parent;
 	jade_node* first;
-	jade_node* last;
+	jade_node* last;	
 } jade_expression_list;
 
 typedef struct jade_program {
@@ -57,7 +57,7 @@ typedef struct jade_program {
 typedef struct jade_identifier {
 	jade_ast_kind kind;
 	ast_node* parent;
-	const char* name;
+	char* name;
 } jade_identifier;
 
 typedef struct jade_integer {
