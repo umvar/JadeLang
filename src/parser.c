@@ -16,7 +16,7 @@ static jade_identifier* parse_identifier(jade_parser* parser, ast_node* parent);
 static jade_function_definition* parse_function_definition(jade_parser* parser, ast_node* parent, jade_identifier* target);
 static jade_variable_definition* parse_variable_definition(jade_parser* parser, ast_node* parent, jade_identifier* target);
 static jade_expression_list* parse_expression_list(jade_parser* parser, ast_node* parent);
-static void parse_expression(jade_parser* parser, jade_expression_list* expression_list);
+static ast_node* parse_expression(jade_parser* parser, ast_node* parent);
 
 void jade_parser_init(jade_parser* parser, jade_scanner* scanner) {
 	parser->scanner = scanner;
@@ -77,13 +77,13 @@ static jade_global_definition_list* parse_global_definition_list(jade_parser* pa
 	jade_identifier* target = parse_identifier(parser, NULL);
 	parse_global_definition(parser, global_definition_list, target);
 	
-	/*
+	
 	while (next_token(parser).kind == JADE_TOKEN_KIND_DELIMITER) {
-		// continue parsing global definitions 
+		parse_global_definition(parser, global_definition_list, target);
 	}
 
 	check_token(parser, JADE_TOKEN_KIND_RPAREN); 
-	*/
+	
 
 	return global_definition_list;
 }
@@ -91,8 +91,13 @@ static jade_global_definition_list* parse_global_definition_list(jade_parser* pa
 static void parse_global_definition(jade_parser* parser, jade_global_definition_list* global_definition_list, jade_identifier* target) {
 	jade_token_kind kind = next_token(parser).kind;
 	if (kind == JADE_TOKEN_KIND_LPAREN) {
-		global_definition_list->first = (jade_node*)parse_function_definition(parser, (ast_node*)global_definition_list, target);
-		global_definition_list->last = global_definition_list->first;
+		if (global_definition_list->first) {
+			global_definition_list->last = (jade_node*)parse_function_definition(parser, (ast_node*)global_definition_list, target);
+			global_definition_list->first->next = global_definition_list->last;
+		} else {
+			global_definition_list->first = (jade_node*)parse_function_definition(parser, (ast_node*)global_definition_list, target);
+			global_definition_list->last = global_definition_list->first;
+		}
 	} else if (kind == JADE_TOKEN_KIND_DEFINE) {
 		//global_definition_list->first = (jade_node*)parse_variable_definition(parser, (ast_node*)global_definition_list, target);
 	} else {
@@ -119,18 +124,29 @@ static jade_expression_list* parse_expression_list(jade_parser* parser, ast_node
 	expression_list->parent = parent;
 
 	while (parser->token.kind != JADE_TOKEN_KIND_RPAREN) {
-		parse_expression(parser, expression_list);
+		if (expression_list->first) {
+			expression_list->last = (jade_node*)parse_expression(parser, (ast_node*)expression_list);	
+			expression_list->first->next = expression_list->last;
+		} else {
+			expression_list->first = (jade_node*)parse_expression(parser, (ast_node*)expression_list);	
+			expression_list->last = expression_list->first;
+		}
 		while (parser->token.kind == JADE_TOKEN_KIND_DELIMITER) {
-			parse_expression(parser, expression_list);
+			if (expression_list->first) {
+				expression_list->last = (jade_node*)parse_expression(parser, (ast_node*)expression_list);	
+				expression_list->first->next = expression_list->last;
+			} else {
+				expression_list->first = (jade_node*)parse_expression(parser, (ast_node*)expression_list);	
+				expression_list->last = expression_list->first;
+			}
 		}
 	}
-
 
 	return expression_list;
 }
 
-static void parse_expression(jade_parser* parser, jade_expression_list* expression_list) {
-	
+static ast_node* parse_expression(jade_parser* parser, ast_node* parent) {
+
 	while (parser->token.kind != JADE_TOKEN_KIND_DELIMITER || parser->token.kind != JADE_TOKEN_KIND_RPAREN) {
 		next_token(parser);
 		if (parser->token.kind == JADE_TOKEN_KIND_IDENTIFIER) {
