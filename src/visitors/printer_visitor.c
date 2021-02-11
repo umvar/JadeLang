@@ -28,10 +28,10 @@ static void visit_global_definition_list(printer_visitor* visitor, jade_global_d
 
 	visitor->depth += 1;
 
-	jade_node* current = node->first;
+	ast_node* current = node->first;
 
 	while (current) {
-		visit(visitor, current->expression);
+		visit(visitor, current);
 		current = current->next;
 	}
 
@@ -65,10 +65,10 @@ static void visit_expression_list(printer_visitor* visitor, jade_expression_list
 
 	visitor->depth += 1;
 
-	jade_node* current = node->first;
+	ast_node* current = node->first;
 
 	while (current) {
-		visit(visitor, current->expression);
+		visit(visitor, current);
 		current = current->next;
 	}
 

@@ -17,7 +17,7 @@ int test_scanner(int argc, char** argv) {
 		jade_lexeme(&scanner, &token, lexeme);
 
 		printf(
-			"%s:%ld:%ld: %s (%s)\n",
+			"%s:%ld:%ld: %s (\"%s\")\n",
 			scanner.path,
 			token.line,
 			token.column,

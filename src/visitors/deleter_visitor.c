@@ -8,11 +8,11 @@ static void visit_program(jade_visitor* visitor, jade_program* node) {
 }
 
 static void visit_global_definition_list(jade_visitor* visitor, jade_global_definition_list* node) {
-	jade_node* current = node->first;
+	ast_node* current = node->first;
 
 	while (current) {
-		jade_node* next = current->next;
-		visit(visitor, current->expression);
+		ast_node* next = current->next;
+		visit(visitor, current);
 		free(current);
 		current = next;
 	}
@@ -34,11 +34,11 @@ static void visit_variable_definition(jade_visitor* visitor, jade_variable_defin
 }
 
 static void visit_expression_list(jade_visitor* visitor, jade_expression_list* node) {
-	jade_node* current = node->first;
+	ast_node* current = node->first;
 
 	while (current) {
-		jade_node* next = current->next;
-		visit(visitor, current->expression);
+		ast_node* next = current->next;
+		visit(visitor, current);
 		free(current);
 		current = next;
 	}

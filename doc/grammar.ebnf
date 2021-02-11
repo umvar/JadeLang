@@ -23,6 +23,7 @@ expression = '(' [expression_list] ')'
 
 expression_list = expression { ',' expression };
 identifier = "[a-zA-Z_]([a-zA-Z0-9_]+)?";
+identifier_list = identifier { ',' identifier };
 integer = "[0-9]+";
 function_call = identifier '(' expression_list ')';
 unary_expression = unary_operator expression;

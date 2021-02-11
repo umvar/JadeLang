@@ -84,14 +84,22 @@ jade_token jade_scan(jade_scanner* scanner) {
 			if (next_char(scanner) == '&') { token.kind = JADE_TOKEN_KIND_AND; get_char(scanner); }
 			else { token.kind = JADE_TOKEN_KIND_BAND; }
 			break;
-		case '<':
-			if (next_char(scanner) == '=') { token.kind = JADE_TOKEN_KIND_LE; get_char(scanner); }
-			else { token.kind = JADE_TOKEN_KIND_LT; }
+		case '<': {
+			switch (next_char(scanner)) {
+				case '=': token.kind = JADE_TOKEN_KIND_LE; get_char(scanner); break;
+				case '<': token.kind = JADE_TOKEN_KIND_SHL; get_char(scanner); break;
+				default: token.kind = JADE_TOKEN_KIND_LT; break;
+			}
 			break;
-		case '>':
-			if (next_char(scanner) == '=') { token.kind = JADE_TOKEN_KIND_GE; get_char(scanner); }
-			else { token.kind = JADE_TOKEN_KIND_GT; }
+		}
+		case '>': {
+			switch (next_char(scanner)) {
+				case '=': token.kind = JADE_TOKEN_KIND_GE; get_char(scanner); break;
+				case '>': token.kind = JADE_TOKEN_KIND_SHR; get_char(scanner); break;
+				default: token.kind = JADE_TOKEN_KIND_GT; break;
+			}
 			break;
+		}
 		case '!':
 			if (next_char(scanner) == '=') { token.kind = JADE_TOKEN_KIND_NEQ; get_char(scanner); }
 			else { token.kind = JADE_TOKEN_KIND_NOT; }

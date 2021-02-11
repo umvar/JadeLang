@@ -21,30 +21,25 @@ typedef enum jade_ast_kind {
 } jade_ast_kind;
 
 struct ast_node;
-struct jade_node;
 
 typedef struct ast_node {
 	jade_ast_kind kind;
+	struct ast_node* next;
 	struct ast_node* parent;
 } ast_node;
-
-typedef struct jade_node {
-	struct jade_node* next;
-	ast_node* expression;
-} jade_node;
 
 typedef struct jade_global_definition_list {
 	jade_ast_kind kind;
 	ast_node* parent;
-	jade_node* first;
-	jade_node* last;
+	ast_node* first;
+	ast_node* last;
 } jade_global_definition_list;
 
 typedef struct jade_expression_list {
 	jade_ast_kind kind;
 	ast_node* parent;
-	jade_node* first;
-	jade_node* last;
+	ast_node* first;
+	ast_node* last;
 } jade_expression_list;
 
 typedef struct jade_program {
@@ -124,3 +119,5 @@ typedef struct jade_function_definition {
 	jade_expression_list* parameters;
 	ast_node* expression;
 } jade_function_definition;
+
+const char* jade_ast_kind_name(jade_ast_kind kind);
