@@ -16,11 +16,21 @@ static void visit_program(printer_visitor* visitor, jade_program* node) {
 
 static void visit_node_list(printer_visitor* visitor, jade_node_list* node) {
 	ast_node* current = node->first;
-	int wrap = (
-		node->first != node->last &&
-		node->parent->kind != JADE_AST_KIND_FUNCTION_DEFINITION &&
-		node->parent->kind != JADE_AST_KIND_FUNCTION_CALL
-	);
+	int wrap = node->first != node->last;
+
+	if (
+		node->parent->kind == JADE_AST_KIND_FUNCTION_DEFINITION &&
+		node == ((jade_function_definition*)node->parent)->parameters
+	) {
+		// do not wrap function definition parameters in parenthesis
+		wrap = 0;
+	} else if (
+		node->parent->kind == JADE_AST_KIND_FUNCTION_CALL &&
+		node == ((jade_function_call*)node->parent)->arguments
+	) {
+		// do not wrap function call arguments in parenthesis
+		wrap = 0;
+	}
 
 	if (wrap)
 		fprintf(visitor->file, "(");

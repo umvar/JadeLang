@@ -1,0 +1,12 @@
+( ; Globals
+	n := 10,
+
+	factorial(n) := #(n < 2, 1, n * factorial_recursive(n - 1)),
+	factorial_iter(n) := (k := 1, #(n >= 2, (k = k * n, n = n - 1, #), 0)),
+	permutation(n, r) := factorial(n) / factorial(n - r),
+	combination(n, r) := permutation(n, r) / factorial(r)
+),
+( ; Entry Point
+	k := n / 2,
+	permutation(n, k)
+)

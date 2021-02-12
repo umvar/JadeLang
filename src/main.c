@@ -12,6 +12,7 @@ void test_scanner(const char* input) {
 	while ((token = jade_scan(&scanner)).kind != JADE_TOKEN_KIND_EOF)
 		printf("%s ", jade_token_kind_name(token.kind));
 
+	printf("\n");
 	jade_scanner_destroy(&scanner);
 }
 
