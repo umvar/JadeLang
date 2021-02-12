@@ -1,6 +1,6 @@
-program = global_definition ',' expression;
+program = global_definition ',' expression EOF;
 
-global_definition = '(' [global_definition_list] ')'
+global_definition = '(' global_definition_list ')'
                   | function_definition
                   | variable_definition
                   ;
@@ -9,7 +9,7 @@ global_definition_list = global_definition { ',' global_definition };
 function_definition = identifier '(' [identifier_list] ')' ':=' expression;
 variable_definition = identifier ':=' expression;
 
-expression = '(' [expression_list] ')'
+expression = '(' expression_list ')'
            | identifier
            | integer
            | function_call
@@ -28,7 +28,7 @@ integer = "[0-9]+";
 function_call = identifier '(' expression_list ')';
 unary_expression = unary_operator expression;
 binary_expression = expression binary_operator expression;
-labeled_expression = '#' '(' expression ',' expression [',' expression] ')';
+labeled_expression = '#' '(' expression ',' expression ',' expression ')';
 jump_expression = "#+!?";
 variable_assignment = identifier '=' expression;
 

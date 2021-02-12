@@ -1,19 +1,20 @@
 #include "ast.h"
 
 const char* ast_kind_names[] = {
-	"Program",
-	"GlobalDefinitionList",
-	"FunctionDefinition",
-	"VariableDefinition",
-	"ExpressionList",
-	"Identifier",
-	"Integer",
-	"FunctionCall",
-	"UnaryExpression",
-	"BinaryExpression",
-	"LabeledExpression",
-	"JumpExpression",
-	"VariableAssignment"
+	"program",
+	"node_list",
+
+	"function_definition",
+	"variable_definition",
+
+	"identifier",
+	"integer",
+	"function_call",
+	"unary_expression",
+	"binary_expression",
+	"labeled_expression",
+	"jump_expression",
+	"variable_assignment"
 };
 
 const char* jade_ast_kind_name(jade_ast_kind kind) {

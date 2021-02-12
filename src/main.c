@@ -1,36 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "parser.h"
 #include "scanner.h"
+#include "visitors/printer_visitor.h"
 
-int test_scanner(int argc, char** argv) {
+void test_scanner(const char* input) {
+	jade_token token;
+	jade_scanner scanner;
+	jade_scanner_init(&scanner, input);
+
+	while ((token = jade_scan(&scanner)).kind != JADE_TOKEN_KIND_EOF)
+		printf("%s ", jade_token_kind_name(token.kind));
+
+	jade_scanner_destroy(&scanner);
+}
+
+void test_parser(const char* input) {
+	jade_scanner scanner;
+	jade_parser parser;
+	jade_scanner_init(&scanner, input);
+	jade_parser_init(&parser, &scanner);
+
+	jade_program* program = jade_parser_parse(&parser);
+	accept_printer_visitor(program, stdout);
+
+	jade_parser_destroy(&parser);
+	jade_scanner_destroy(&scanner);
+}
+
+int main(int argc, char** argv) {
 	if (argc < 2) {
-		fprintf(stderr, "USAGE: jadec file\n");
+		fprintf(stderr, "USAGE: %s file\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
-	char lexeme[64];
-	jade_token token;
-	jade_scanner scanner;
-	jade_scanner_init(&scanner, argv[1]);
+	test_scanner(argv[1]);
+	test_parser(argv[1]);
 
-	while ((token = jade_scan(&scanner)).kind != JADE_TOKEN_KIND_EOF) {
-		jade_lexeme(&scanner, &token, lexeme);
-
-		printf(
-			"%s:%ld:%ld: %s (\"%s\")\n",
-			scanner.path,
-			token.line,
-			token.column,
-			jade_token_kind_name(token.kind),
-			lexeme
-		);
-	}
-
-	jade_scanner_destroy(&scanner);
-	return EXIT_SUCCESS;
-}
-
-
-int main(int argc, char** argv) {
-	return test_scanner(argc, argv);
+	return 0;
 }

@@ -5,10 +5,9 @@
 void visit(void* visitor, ast_node* node) {
 	switch (node->kind) {
 		case JADE_AST_KIND_PROGRAM: VISIT(program); break;
-		case JADE_AST_KIND_GLOBAL_DEFINITION_LIST: VISIT(global_definition_list); break;
+		case JADE_AST_NODE_LIST: VISIT(node_list); break;
 		case JADE_AST_KIND_FUNCTION_DEFINITION: VISIT(function_definition); break;
 		case JADE_AST_KIND_VARIABLE_DEFINITION: VISIT(variable_definition); break;
-		case JADE_AST_KIND_EXPRESSION_LIST: VISIT(expression_list); break;
 		case JADE_AST_KIND_IDENTIFIER: VISIT(identifier); break;
 		case JADE_AST_KIND_INTEGER: VISIT(integer); break;
 		case JADE_AST_KIND_FUNCTION_CALL: VISIT(function_call); break;

@@ -2,18 +2,17 @@
 #include "visitor.h"
 
 static void visit_program(jade_visitor* visitor, jade_program* node) {
-	visitor->visit_global_definition_list(visitor, node->definitions);
-	visitor->visit_expression_list(visitor, node->expressions);
+	visit(visitor, node->definition);
+	visit(visitor, node->expression);
 	free(node);
 }
 
-static void visit_global_definition_list(jade_visitor* visitor, jade_global_definition_list* node) {
+static void visit_node_list(jade_visitor* visitor, jade_node_list* node) {
 	ast_node* current = node->first;
 
 	while (current) {
 		ast_node* next = current->next;
 		visit(visitor, current);
-		free(current);
 		current = next;
 	}
 
@@ -22,7 +21,7 @@ static void visit_global_definition_list(jade_visitor* visitor, jade_global_defi
 
 static void visit_function_definition(jade_visitor* visitor, jade_function_definition* node) {
 	visitor->visit_identifier(visitor, node->target);
-	visitor->visit_expression_list(visitor, node->parameters);
+	visitor->visit_node_list(visitor, node->parameters);
 	visit(visitor, node->expression);
 	free(node);
 }
@@ -33,20 +32,8 @@ static void visit_variable_definition(jade_visitor* visitor, jade_variable_defin
 	free(node);
 }
 
-static void visit_expression_list(jade_visitor* visitor, jade_expression_list* node) {
-	ast_node* current = node->first;
-
-	while (current) {
-		ast_node* next = current->next;
-		visit(visitor, current);
-		free(current);
-		current = next;
-	}
-
-	free(node);
-}
-
 static void visit_identifier(jade_visitor* visitor, jade_identifier* node) {
+	free((void*)node->name);
 	free(node);
 }
 
@@ -56,7 +43,7 @@ static void visit_integer(jade_visitor* visitor, jade_integer* node) {
 
 static void visit_function_call(jade_visitor* visitor, jade_function_call* node) {
 	visitor->visit_identifier(visitor, node->target);
-	visitor->visit_expression_list(visitor, node->arguments);
+	visitor->visit_node_list(visitor, node->arguments);
 	free(node);
 }
 
@@ -89,12 +76,11 @@ static void visit_variable_assignment(jade_visitor* visitor, jade_variable_assig
 }
 
 void accept_deleter_visitor(jade_program* node) {
-	jade_visitor dv = {
+	static jade_visitor dv = {
 		.visit_program = visit_program,
-		.visit_global_definition_list = visit_global_definition_list,
+		.visit_node_list = visit_node_list,
 		.visit_function_definition = visit_function_definition,
 		.visit_variable_definition = visit_variable_definition,
-		.visit_expression_list = visit_expression_list,
 		.visit_identifier = visit_identifier,
 		.visit_integer = visit_integer,
 		.visit_function_call = visit_function_call,

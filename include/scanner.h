@@ -15,3 +15,6 @@ void jade_scanner_init(jade_scanner* scanner, const char* path);
 void jade_scanner_destroy(jade_scanner* scanner);
 jade_token jade_scan(jade_scanner* scanner);
 void jade_lexeme(jade_scanner* scanner, const jade_token* token, char* buffer);
+
+int jade_is_unary_operator(jade_token_kind kind);
+int jade_is_binary_operator(jade_token_kind kind);
