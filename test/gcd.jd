@@ -1,0 +1,6 @@
+( ; Globals
+	gcd(a, b) := gcd(b, a % b)
+),
+( ; Entry Point
+	gcd(18, 27)
+)

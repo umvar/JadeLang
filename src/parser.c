@@ -32,7 +32,7 @@ void jade_parser_destroy(jade_parser* parser) {
 jade_program* jade_parser_parse(jade_parser* parser) {
 	if (parser->ast)
 		accept_deleter_visitor(parser->ast);
-
+		
 	return parser->ast = parse_program(parser);
 }
 
