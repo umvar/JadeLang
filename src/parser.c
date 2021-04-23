@@ -31,8 +31,8 @@ void jade_parser_destroy(jade_parser* parser) {
 
 jade_program* jade_parser_parse(jade_parser* parser) {
 	if (parser->ast)
-		accept_deleter_visitor(parser->ast);
-		
+		jade_parser_destroy(parser);
+
 	return parser->ast = parse_program(parser);
 }
 
@@ -263,6 +263,17 @@ ast_node* parse_atom(jade_parser* parser) {
 	}
 }
 
+static size_t compute_string_hash(const char* lexeme) {
+	size_t hash = 0;
+
+	for (; *lexeme; lexeme++) {
+		hash *= 31;
+		hash += *lexeme;
+	}
+
+	return hash;
+}
+
 jade_identifier* parse_identifier(jade_parser* parser) {
 	// identifier = "[a-zA-Z_]([a-zA-Z0-9_]+)?";
 	// assert(parser->token.kind == JADE_TOKEN_KIND_IDENTIFIER);
@@ -270,6 +281,7 @@ jade_identifier* parse_identifier(jade_parser* parser) {
 	char* lexeme = malloc(parser->token.size + 1);
 	jade_lexeme(parser->scanner, &parser->token, lexeme);
 	identifier->name = lexeme;
+	identifier->hash = compute_string_hash(lexeme);
 	next_token(parser);
 	return identifier;
 }
@@ -280,7 +292,7 @@ jade_integer* parse_integer(jade_parser* parser) {
 	jade_integer* integer = (jade_integer*)jade_create_node(JADE_AST_KIND_INTEGER);
 	char* lexeme = malloc(parser->token.size + 1);
 	jade_lexeme(parser->scanner, &parser->token, lexeme);
-	integer->value = strtol(lexeme, NULL, 10);
+	integer->value = strtoll(lexeme, NULL, 10);
 	free(lexeme);
 	next_token(parser);
 	return integer;

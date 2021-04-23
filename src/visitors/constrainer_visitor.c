@@ -4,12 +4,12 @@ typedef struct constrainer_visitor {
 	VISITORS(constrainer_visitor);
 } constrainer_visitor;
 
-static void visit_program(jade_visitor* visitor, jade_program* node) {
+static void visit_program(constrainer_visitor* visitor, jade_program* node) {
 	visit(visitor, node->definition);
 	visit(visitor, node->expression);
 }
 
-static void visit_node_list(jade_visitor* visitor, jade_node_list* node) {
+static void visit_node_list(constrainer_visitor* visitor, jade_node_list* node) {
 	ast_node* current = node->first;
 
 	while (current) {
@@ -19,52 +19,52 @@ static void visit_node_list(jade_visitor* visitor, jade_node_list* node) {
 	}
 }
 
-static void visit_function_definition(jade_visitor* visitor, jade_function_definition* node) {
+static void visit_function_definition(constrainer_visitor* visitor, jade_function_definition* node) {
 	visitor->visit_identifier(visitor, node->target);
 	visitor->visit_node_list(visitor, node->parameters);
 	visit(visitor, node->expression);
 }
 
-static void visit_variable_definition(jade_visitor* visitor, jade_variable_definition* node) {
+static void visit_variable_definition(constrainer_visitor* visitor, jade_variable_definition* node) {
 	visitor->visit_identifier(visitor, node->target);
 	visit(visitor, node->expression);
 }
 
-static void visit_identifier(jade_visitor* visitor, jade_identifier* node) {
+static void visit_identifier(constrainer_visitor* visitor, jade_identifier* node) {
 }
 
-static void visit_integer(jade_visitor* visitor, jade_integer* node) {
+static void visit_integer(constrainer_visitor* visitor, jade_integer* node) {
 }
 
-static void visit_function_call(jade_visitor* visitor, jade_function_call* node) {
+static void visit_function_call(constrainer_visitor* visitor, jade_function_call* node) {
 	visitor->visit_identifier(visitor, node->target);
 	visitor->visit_node_list(visitor, node->arguments);
 }
 
-static void visit_unary_expression(jade_visitor* visitor, jade_unary_expression* node) {
+static void visit_unary_expression(constrainer_visitor* visitor, jade_unary_expression* node) {
 	visit(visitor, node->expression);
 }
 
-static void visit_binary_expression(jade_visitor* visitor, jade_binary_expression* node) {
+static void visit_binary_expression(constrainer_visitor* visitor, jade_binary_expression* node) {
 	visit(visitor, node->left_expression);
 	visit(visitor, node->right_expression);
 }
 
-static void visit_labeled_expression(jade_visitor* visitor, jade_labeled_expression* node) {
+static void visit_labeled_expression(constrainer_visitor* visitor, jade_labeled_expression* node) {
 	visit(visitor, node->expression);
 	visit(visitor, node->true_expression);
 	visit(visitor, node->false_expression);
 }
 
-static void visit_jump_expression(jade_visitor* visitor, jade_jump_expression* node) {
+static void visit_jump_expression(constrainer_visitor* visitor, jade_jump_expression* node) {
 }
 
-static void visit_variable_assignment(jade_visitor* visitor, jade_variable_assignment* node) {
+static void visit_variable_assignment(constrainer_visitor* visitor, jade_variable_assignment* node) {
 	visitor->visit_identifier(visitor, node->target);
 	visit(visitor, node->expression);
 }
 
-void accept_deleter_visitor(jade_program* node) {
+void accept_constrainer_visitor(jade_program* node) {
 	static constrainer_visitor cv = {
 		.visit_program = visit_program,
 		.visit_node_list = visit_node_list,

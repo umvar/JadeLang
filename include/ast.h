@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+#include <stdlib.h>
 #include "token.h"
 
 #define AST_NODE jade_ast_kind kind; struct ast_node* next; struct ast_node* parent
@@ -39,11 +41,12 @@ typedef struct jade_program {
 typedef struct jade_identifier {
 	AST_NODE;
 	const char* name;
+	size_t hash;
 } jade_identifier;
 
 typedef struct jade_integer {
 	AST_NODE;
-	long value;
+	long long value;
 } jade_integer;
 
 typedef struct jade_function_call {
@@ -74,8 +77,8 @@ typedef struct jade_labeled_expression {
 
 typedef struct jade_jump_expression {
 	AST_NODE;
-	int loop_index;
-	int is_break;
+	size_t loop_index;
+	bool is_break;
 } jade_jump_expression;
 
 typedef struct jade_variable_definition {

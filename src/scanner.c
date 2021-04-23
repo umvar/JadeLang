@@ -7,7 +7,7 @@
 static char peek_char(jade_scanner* scanner);
 static char get_char(jade_scanner* scanner);
 static char next_char(jade_scanner* scanner);
-static void syntax_error(jade_scanner* scanner, long line, long column);
+static void syntax_error(jade_scanner* scanner, size_t line, size_t column);
 static void skip_line(jade_scanner* scanner);
 static void skip_whitespace(jade_scanner* scanner);
 static void skip_identifier(jade_scanner* scanner);
@@ -16,7 +16,7 @@ static void skip_integer(jade_scanner* scanner);
 void jade_scanner_init(jade_scanner* scanner, const char* path) {
 	FILE* file = fopen(path, "r");
 	char* source;
-	long size;
+	size_t size;
 
 	if (!file) {
 		perror("fopen() failed");
@@ -25,6 +25,12 @@ void jade_scanner_init(jade_scanner* scanner, const char* path) {
 
 	fseek(file, 0, SEEK_END);
 	size = ftell(file);
+
+	if (size < 0) {
+		perror("ftell() failed");
+		exit(EXIT_FAILURE);
+	}
+
 	fseek(file, 0, SEEK_SET);
 
 	source = malloc(size + 1);
@@ -34,10 +40,10 @@ void jade_scanner_init(jade_scanner* scanner, const char* path) {
 
 	scanner->path = path;
 	scanner->source = source;
-	scanner->position = 0L;
+	scanner->position = 0;
 	scanner->size = size;
-	scanner->line = 1L;
-	scanner->column = 1L;
+	scanner->line = 1;
+	scanner->column = 1;
 }
 
 void jade_scanner_destroy(jade_scanner* scanner) {
@@ -152,7 +158,7 @@ char next_char(jade_scanner* scanner) {
 	return peek_char(scanner);
 }
 
-void syntax_error(jade_scanner* scanner, long line, long column) {
+void syntax_error(jade_scanner* scanner, size_t line, size_t column) {
 	// TODO: diagnostics
 	fprintf(stderr, "%s:%ld:%ld: syntax error\n", scanner->path, line, column);
 	exit(EXIT_FAILURE);

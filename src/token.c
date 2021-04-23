@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "token.h"
 
 const char* token_kind_names[] = {
@@ -17,7 +18,7 @@ const char* jade_token_kind_name(jade_token_kind kind) {
 	return token_kind_names[kind];
 }
 
-int jade_is_unary_operator(jade_token_kind kind) {
+bool jade_is_unary_operator(jade_token_kind kind) {
 	return (
 		kind == JADE_TOKEN_KIND_PLUS ||
 		kind == JADE_TOKEN_KIND_MINUS ||
@@ -26,7 +27,7 @@ int jade_is_unary_operator(jade_token_kind kind) {
 	);
 }
 
-int jade_is_binary_operator(jade_token_kind kind) {
+bool jade_is_binary_operator(jade_token_kind kind) {
 	return (
 		kind == JADE_TOKEN_KIND_PLUS ||
 		kind == JADE_TOKEN_KIND_MINUS ||

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stddef.h>
+
 typedef enum jade_token_kind {
 	JADE_TOKEN_KIND_EOF,
 	JADE_TOKEN_KIND_IDENTIFIER,
@@ -34,10 +36,10 @@ typedef enum jade_token_kind {
 
 typedef struct jade_token {
 	jade_token_kind kind;
-	long position;
-	long size;
-	long line;
-	long column;
+	size_t position;
+	size_t size;
+	size_t line;
+	size_t column;
 } jade_token;
 
 const char* jade_token_kind_name(jade_token_kind kind);
