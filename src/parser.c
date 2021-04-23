@@ -5,6 +5,7 @@
 #include "factory.h"
 #include "parser.h"
 #include "scanner.h"
+#include "util.h"
 #include "visitors/deleter_visitor.h"
 
 static void next_token(jade_parser* parser);
@@ -261,17 +262,6 @@ ast_node* parse_atom(jade_parser* parser) {
 		syntax_error(parser, JADE_TOKEN_KIND_EOF);
 		return NULL;
 	}
-}
-
-static size_t compute_string_hash(const char* lexeme) {
-	size_t hash = 0;
-
-	for (; *lexeme; lexeme++) {
-		hash *= 31;
-		hash += *lexeme;
-	}
-
-	return hash;
 }
 
 jade_identifier* parse_identifier(jade_parser* parser) {

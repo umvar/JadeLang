@@ -1,0 +1,12 @@
+{
+	"files.associations": {
+		"vector": "c",
+		"ast_printer_visitor.h": "c",
+		"printer_visitor.h": "c",
+		"parser.h": "c",
+		"numeric": "cpp",
+		"ostream": "cpp",
+		"system_error": "cpp",
+		"typeinfo": "cpp"
+	}
+}
